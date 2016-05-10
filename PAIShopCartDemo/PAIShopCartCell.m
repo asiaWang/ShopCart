@@ -21,7 +21,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *editCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *editSelecteSizeLabel;
 @property (weak, nonatomic) IBOutlet UIButton *editSelecteSizeButton;
-@property (nonatomic,assign,readwrite)PAIShopCartCellState state;
 
 @end
 
@@ -30,8 +29,16 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    for (id object in self.gestureRecognizers) {
+        if ([object isKindOfClass:[UITapGestureRecognizer class]]) {
+            UITapGestureRecognizer *tap = (UITapGestureRecognizer *)object;
+            tap.enabled = NO;
+        }
+    }
+    
     self.limitedMaxCounts = -1;
     self.cellType = PAIShopCartCellType_Nomal;
+    self.state = PAIShopCartCellState_Nomal;
     self.itemImageView.contentMode = UIViewContentModeScaleAspectFit;
 }
 
@@ -57,6 +64,15 @@
         self.addButton.hidden = NO;
         self.editSelecteSizeLabel.hidden = NO;
         self.editSelecteSizeButton.hidden = NO;
+    }
+}
+
+- (void)setState:(PAIShopCartCellState)state {
+    _state = state;
+    if (_state == PAIShopCartCellState_Nomal) {
+        [self.itemSelecteButton setImage:[UIImage imageNamed:@"icon_unchecked_grey"] forState:UIControlStateNormal];
+    }else {
+        [self.itemSelecteButton setImage:[UIImage imageNamed:@"icon_check_red_solid"] forState:UIControlStateNormal];
     }
 }
 
@@ -119,6 +135,11 @@
 }
 
 - (IBAction)selectedAction:(id)sender {
+    if (self.state == PAIShopCartCellState_Nomal) {
+        self.state = PAIShopCartCellState_selected;
+    }else {
+        self.state = PAIShopCartCellState_Nomal;
+    }
     self.selectedButtonBlock(self.index);
 }
 
@@ -150,5 +171,7 @@
 
     // Configure the view for the selected state
 }
-
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    NSLog(@"touche 1 le");
+}
 @end

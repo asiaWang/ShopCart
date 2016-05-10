@@ -7,7 +7,7 @@
 //
 
 #import "PAIShopCartBottomBar.h"
-
+#import <CoreText/CoreText.h>
 @interface PAIShopCartBottomBar()
 
 @property (weak, nonatomic) IBOutlet UILabel *priceLabel;
@@ -15,6 +15,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *selecteAllButton;
 @property (weak, nonatomic) IBOutlet UILabel *priceTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *priceDesLabel;
+@property (nonatomic,assign,readwrite)PAIShopCartBottomBarState state;
+
 @end
 
 @implementation PAIShopCartBottomBar
@@ -31,26 +33,33 @@
 
 - (void)setShopCartType:(PAIShopCartBottomBarType)shopCartType {
     _shopCartType = shopCartType;
-//    if (self.shopCartType == PAIShopCartBottomBarType_Nomal) {
-//        self.priceLabel.hidden = NO;
-//        self.priceDesLabel.hidden = NO;
-//        self.priceTitleLabel.hidden = NO;
-//        self.selecteAllButton.imageEdgeInsets = UIEdgeInsetsMake(<#CGFloat top#>, <#CGFloat left#>, <#CGFloat bottom#>, <#CGFloat right#>)
-//        self.selecteAllButton.imageEdgeInsets = UIEdgeInsetsMake(<#CGFloat top#>, <#CGFloat left#>, <#CGFloat bottom#>, <#CGFloat right#>)
-//    }else {
-//        self.priceLabel.hidden = YES;
-//        self.priceDesLabel.hidden = YES;
-//        self.priceTitleLabel.hidden = YES;
-//
-//        self.selecteAllButton.imageEdgeInsets = UIEdgeInsetsMake(<#CGFloat top#>, <#CGFloat left#>, <#CGFloat bottom#>, <#CGFloat right#>)
-//        self.selecteAllButton.imageEdgeInsets = UIEdgeInsetsMake(<#CGFloat top#>, <#CGFloat left#>, <#CGFloat bottom#>, <#CGFloat right#>)
-//
-//    }
+    if (self.shopCartType == PAIShopCartBottomBarType_Nomal) {
+        self.priceLabel.hidden = NO;
+        self.priceDesLabel.hidden = NO;
+        self.priceTitleLabel.hidden = NO;
+        [self.buyButton setTitle:[NSString stringWithFormat:@"结算"] forState:UIControlStateNormal];
+    }else {
+        self.priceLabel.hidden = YES;
+        self.priceDesLabel.hidden = YES;
+        self.priceTitleLabel.hidden = YES;
+        [self.buyButton setTitle:[NSString stringWithFormat:@"删除"] forState:UIControlStateNormal];
+    }
+}
+
+- (void)setState:(PAIShopCartBottomBarState)state {
+    _state = state;
+    if (_state == PAIShopCartBottomBarState_Nomal) {
+        [self.selecteAllButton setImage:[UIImage imageNamed:@"icon_unchecked_grey"] forState:UIControlStateNormal];
+    }else {
+        [self.selecteAllButton setImage:[UIImage imageNamed:@"icon_check_red_solid"] forState:UIControlStateNormal];
+    }
 }
 
 - (void)setPrice:(NSString *)priceText {
     if (priceText.length > 0) {
-        self.priceLabel.text = [NSString stringWithFormat:@"¥%@",priceText];
+        NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",priceText]];
+        [attString addAttribute:(NSString *)kCTFontAttributeName value:(id)CFBridgingRelease(CTFontCreateWithName((CFStringRef)[UIFont  systemFontOfSize:12.f].fontName, 12, NULL)) range:NSMakeRange(0, 1)];
+        self.priceLabel.attributedText = attString;
     }else {
         self.priceLabel.text = @"";
     }
@@ -58,13 +67,26 @@
 
 - (void)setBuyButtonCount:(NSInteger)count {
     if (count > 0) {
-        [self.buyButton setTitle:[NSString stringWithFormat:@"结算(%ld)",count] forState:UIControlStateNormal];
+        if (self.shopCartType == PAIShopCartBottomBarType_Nomal) {
+            [self.buyButton setTitle:[NSString stringWithFormat:@"结算(%ld)",count] forState:UIControlStateNormal];
+        }else {
+            [self.buyButton setTitle:[NSString stringWithFormat:@"删除(%ld)",count] forState:UIControlStateNormal];
+        }
     }else {
-        [self.buyButton setTitle:[NSString stringWithFormat:@"结算"] forState:UIControlStateNormal];
+        if (self.shopCartType == PAIShopCartBottomBarType_Nomal) {
+            [self.buyButton setTitle:[NSString stringWithFormat:@"结算"] forState:UIControlStateNormal];
+        }else {
+            [self.buyButton setTitle:[NSString stringWithFormat:@"删除"] forState:UIControlStateNormal];
+        }
     }
 }
 
 - (IBAction)selecteAllClick:(id)sender {
+    if (self.state == PAIShopCartBottomBarState_Nomal) {
+        self.state = PAIShopCartBottomBarState_Selected;
+    }else {
+        self.state = PAIShopCartBottomBarState_Nomal;
+    }
     self.selectedAllClick(self.shopCartType);
 }
 - (IBAction)buyAction:(id)sender {

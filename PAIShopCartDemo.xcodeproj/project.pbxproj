@@ -30,6 +30,9 @@
 		7108DD451CE0A6C300A1D320 /* icon_unchecked_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 7108DD421CE0A6C300A1D320 /* icon_unchecked_grey.png */; };
 		7108DD461CE0A6C300A1D320 /* icon_unchecked_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7108DD431CE0A6C300A1D320 /* icon_unchecked_grey@2x.png */; };
 		7108DD471CE0A6C300A1D320 /* icon_unchecked_grey@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7108DD441CE0A6C300A1D320 /* icon_unchecked_grey@3x.png */; };
+		7108DD501CE1B5C800A1D320 /* PAIShopRecommendView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7108DD4E1CE1B5C800A1D320 /* PAIShopRecommendView.m */; };
+		7108DD511CE1B5C800A1D320 /* PAIShopRecommendView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7108DD4F1CE1B5C800A1D320 /* PAIShopRecommendView.xib */; };
+		719B33221CE1CB7800613AEF /* CollectionDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 719B33211CE1CB7800613AEF /* CollectionDemoViewController.m */; };
 		B8637E3B1887B8AF5552A3F2 /* libPods-PAIShopCartDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61F5540A305E8C665E6EC905 /* libPods-PAIShopCartDemo.a */; };
 /* End PBXBuildFile section */
 
@@ -88,6 +91,11 @@
 		7108DD421CE0A6C300A1D320 /* icon_unchecked_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_unchecked_grey.png; sourceTree = "<group>"; };
 		7108DD431CE0A6C300A1D320 /* icon_unchecked_grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_unchecked_grey@2x.png"; sourceTree = "<group>"; };
 		7108DD441CE0A6C300A1D320 /* icon_unchecked_grey@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_unchecked_grey@3x.png"; sourceTree = "<group>"; };
+		7108DD4D1CE1B5C800A1D320 /* PAIShopRecommendView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PAIShopRecommendView.h; sourceTree = "<group>"; };
+		7108DD4E1CE1B5C800A1D320 /* PAIShopRecommendView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PAIShopRecommendView.m; sourceTree = "<group>"; };
+		7108DD4F1CE1B5C800A1D320 /* PAIShopRecommendView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PAIShopRecommendView.xib; sourceTree = "<group>"; };
+		719B33201CE1CB7800613AEF /* CollectionDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionDemoViewController.h; sourceTree = "<group>"; };
+		719B33211CE1CB7800613AEF /* CollectionDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionDemoViewController.m; sourceTree = "<group>"; };
 		9446656B63A67EAFEB606F3F /* Pods-PAIShopCartDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PAIShopCartDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PAIShopCartDemo/Pods-PAIShopCartDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		B640A78980FA8AB16DBDC58C /* Pods-PAIShopCartDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PAIShopCartDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-PAIShopCartDemo/Pods-PAIShopCartDemo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -189,6 +197,10 @@
 				7108DD371CE08A7D00A1D320 /* PAIShopCartSectionHeader.h */,
 				7108DD381CE08A7D00A1D320 /* PAIShopCartSectionHeader.m */,
 				7108DD3A1CE08AAA00A1D320 /* PAIShopCartSectionHeader.xib */,
+				7108DD4D1CE1B5C800A1D320 /* PAIShopRecommendView.h */,
+				7108DD4E1CE1B5C800A1D320 /* PAIShopRecommendView.m */,
+				7108DD4F1CE1B5C800A1D320 /* PAIShopRecommendView.xib */,
+				719B33231CE1CB8300613AEF /* collectionDemo */,
 			);
 			path = PAIShopCartDemo;
 			sourceTree = "<group>";
@@ -217,6 +229,15 @@
 				7108DD191CE030E300A1D320 /* Info.plist */,
 			);
 			path = PAIShopCartDemoUITests;
+			sourceTree = "<group>";
+		};
+		719B33231CE1CB8300613AEF /* collectionDemo */ = {
+			isa = PBXGroup;
+			children = (
+				719B33201CE1CB7800613AEF /* CollectionDemoViewController.h */,
+				719B33211CE1CB7800613AEF /* CollectionDemoViewController.m */,
+			);
+			name = collectionDemo;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -327,6 +348,7 @@
 			files = (
 				7108DD3B1CE08AAA00A1D320 /* PAIShopCartSectionHeader.xib in Resources */,
 				7108DD411CE0A5C700A1D320 /* icon_check_red_solid@3x.png in Resources */,
+				7108DD511CE1B5C800A1D320 /* PAIShopRecommendView.xib in Resources */,
 				7108DD021CE030E300A1D320 /* LaunchScreen.storyboard in Resources */,
 				7108DD2E1CE0391900A1D320 /* PAIShopCartCell.xib in Resources */,
 				7108DCFF1CE030E300A1D320 /* Assets.xcassets in Resources */,
@@ -412,10 +434,12 @@
 			files = (
 				7108DD2D1CE0391900A1D320 /* PAIShopCartCell.m in Sources */,
 				7108DD391CE08A7D00A1D320 /* PAIShopCartSectionHeader.m in Sources */,
+				7108DD501CE1B5C800A1D320 /* PAIShopRecommendView.m in Sources */,
 				7108DCFA1CE030E300A1D320 /* ViewController.m in Sources */,
 				7108DD351CE07A6300A1D320 /* PAIShopCartBottomBar.m in Sources */,
 				7108DCF71CE030E300A1D320 /* AppDelegate.m in Sources */,
 				7108DCF41CE030E300A1D320 /* main.m in Sources */,
+				719B33221CE1CB7800613AEF /* CollectionDemoViewController.m in Sources */,
 				7108DD311CE03FEA00A1D320 /* PAICustormDisplayLabel.m in Sources */,
 				7108DD281CE0318A00A1D320 /* PAIShopCartViewController.m in Sources */,
 			);

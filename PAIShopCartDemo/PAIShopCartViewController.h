@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PAIShopCartViewController : UIViewController
+@interface PAIShopCartViewController : UIViewController<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 
 @end

@@ -13,8 +13,14 @@ typedef NS_ENUM(NSInteger,PAIShopCartBottomBarType) {
     PAIShopCartBottomBarType_Edit, // 编辑
 };
 
+typedef NS_ENUM(NSInteger,PAIShopCartBottomBarState) {
+    PAIShopCartBottomBarState_Nomal,
+    PAIShopCartBottomBarState_Selected,
+};
+
 @interface PAIShopCartBottomBar : UIView
 @property (nonatomic,assign)PAIShopCartBottomBarType shopCartType;
+@property (nonatomic,assign,readonly)PAIShopCartBottomBarState state;
 @property (nonatomic,copy)void (^shopCartBottomBarBuyClick)(PAIShopCartBottomBarType);
 @property (nonatomic,copy)void (^selectedAllClick)(PAIShopCartBottomBarType);
 

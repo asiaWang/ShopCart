@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "PAIShopCartViewController.h"
+#import "CollectionDemoViewController.h"
 
 @interface ViewController ()
 
@@ -23,6 +24,10 @@
 - (IBAction)pushToShopCartView:(id)sender {
     PAIShopCartViewController *shopCartViewController = [[PAIShopCartViewController alloc] init];
     [self.navigationController pushViewController:shopCartViewController animated:YES];
+}
+- (IBAction)pushDemo:(id)sender {
+    CollectionDemoViewController *demo = [[CollectionDemoViewController alloc]init];
+    [self.navigationController pushViewController:demo animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

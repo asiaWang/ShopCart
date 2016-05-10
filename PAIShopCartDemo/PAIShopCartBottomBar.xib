@@ -11,14 +11,16 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="49"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l8w-6Z-nis">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l8w-6Z-nis">
                     <rect key="frame" x="0.0" y="0.0" width="70" height="49"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="70" id="Y7f-Y3-fku"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                    <inset key="titleEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
-                    <state key="normal" title="全选"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" title="全选" image="icon_unchecked_grey.png">
+                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
                     <connections>
                         <action selector="selecteAllClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="D4o-zl-27k"/>
                     </connections>
@@ -91,7 +93,10 @@
                 <outlet property="priceTitleLabel" destination="O4m-gt-fCy" id="fDB-aP-aAy"/>
                 <outlet property="selecteAllButton" destination="l8w-6Z-nis" id="iH6-I1-4SE"/>
             </connections>
-            <point key="canvasLocation" x="958" y="449.5"/>
+            <point key="canvasLocation" x="895" y="530.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="icon_unchecked_grey.png" width="20" height="20"/>
+    </resources>
 </document>
