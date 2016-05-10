@@ -6,9 +6,9 @@
 //  Copyright © 2016年 com.pencho.com. All rights reserved.
 //
 
-#import "PAIShopCartSectionHeader.h"
+#import "PAIShopCartHeadView.h"
 
-@interface PAIShopCartSectionHeader()
+@interface PAIShopCartHeadView()
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UILabel *itemNameLabel;
 @property (weak, nonatomic) IBOutlet UIButton *stateButton;
@@ -16,7 +16,7 @@
 
 @end
 
-@implementation PAIShopCartSectionHeader
+@implementation PAIShopCartHeadView
 
 /*
 // Only override drawRect: if you perform custom drawing.

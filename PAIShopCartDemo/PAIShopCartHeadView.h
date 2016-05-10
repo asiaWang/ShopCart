@@ -13,7 +13,7 @@ typedef NS_ENUM(NSInteger,PAIShopCartSectionHeaderState) {
     PAIShopCartSectionHeaderState_Selected,
 };
 
-@interface PAIShopCartSectionHeader : UITableViewHeaderFooterView
+@interface PAIShopCartHeadView : UITableViewHeaderFooterView
 
 @property (nonatomic,copy)NSString *itemNameStr;
 @property (nonatomic,copy)NSString *itemImageUrl;
