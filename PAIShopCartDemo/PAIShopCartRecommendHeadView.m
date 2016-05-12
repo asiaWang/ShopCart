@@ -1,14 +1,14 @@
 //
-//  PAIShopRecommendHeadView.m
+//  PAIShopCartRecommendHeadView.m
 //  PAIShopCartDemo
 //
-//  Created by wangasia on 16/5/10.
+//  Created by wyz on 16/5/11.
 //  Copyright © 2016年 com.pencho.com. All rights reserved.
 //
 
-#import "PAIShopRecommendHeadView.h"
+#import "PAIShopCartRecommendHeadView.h"
 
-@implementation PAIShopRecommendHeadView
+@implementation PAIShopCartRecommendHeadView
 
 /*
 // Only override drawRect: if you perform custom drawing.

@@ -18,7 +18,8 @@ typedef NS_ENUM(NSInteger,PAIShopCartSectionHeaderState) {
 @property (nonatomic,copy)NSString *itemNameStr;
 @property (nonatomic,copy)NSString *itemImageUrl;
 @property (nonatomic,assign)NSInteger section;
-@property (nonatomic,assign,readonly)PAIShopCartSectionHeaderState state;
+
+@property (nonatomic,assign)PAIShopCartSectionHeaderState state;
 // click all button
 @property (nonatomic,copy)void (^selectedAllButtonBlock)(NSInteger);
 // click本身

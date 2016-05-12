@@ -15,8 +15,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *selecteAllButton;
 @property (weak, nonatomic) IBOutlet UILabel *priceTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *priceDesLabel;
-@property (nonatomic,assign,readwrite)PAIShopCartBottomBarState state;
 
+@property (assign,nonatomic)NSInteger instenseCount;
 @end
 
 @implementation PAIShopCartBottomBar
@@ -24,8 +24,8 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
+    self.instenseCount = 0;
     self.shopCartType = PAIShopCartBottomBarType_Nomal;
-    
     self.layer.shadowColor = [UIColor grayColor].CGColor;
     self.layer.shadowOffset = CGSizeMake(0, -0.1);
     self.layer.shadowOpacity = 0.5;
@@ -37,13 +37,12 @@
         self.priceLabel.hidden = NO;
         self.priceDesLabel.hidden = NO;
         self.priceTitleLabel.hidden = NO;
-        [self.buyButton setTitle:[NSString stringWithFormat:@"结算"] forState:UIControlStateNormal];
     }else {
         self.priceLabel.hidden = YES;
         self.priceDesLabel.hidden = YES;
         self.priceTitleLabel.hidden = YES;
-        [self.buyButton setTitle:[NSString stringWithFormat:@"删除"] forState:UIControlStateNormal];
     }
+    [self setBuyButtonCount:self.instenseCount];
 }
 
 - (void)setState:(PAIShopCartBottomBarState)state {
@@ -57,7 +56,7 @@
 
 - (void)setPrice:(NSString *)priceText {
     if (priceText.length > 0) {
-        NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@",priceText]];
+        NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"¥%@",priceText]];
         [attString addAttribute:(NSString *)kCTFontAttributeName value:(id)CFBridgingRelease(CTFontCreateWithName((CFStringRef)[UIFont  systemFontOfSize:12.f].fontName, 12, NULL)) range:NSMakeRange(0, 1)];
         self.priceLabel.attributedText = attString;
     }else {
@@ -66,6 +65,7 @@
 }
 
 - (void)setBuyButtonCount:(NSInteger)count {
+    self.instenseCount = count;
     if (count > 0) {
         if (self.shopCartType == PAIShopCartBottomBarType_Nomal) {
             [self.buyButton setTitle:[NSString stringWithFormat:@"结算(%ld)",count] forState:UIControlStateNormal];
@@ -80,6 +80,7 @@
         }
     }
 }
+
 
 - (IBAction)selecteAllClick:(id)sender {
     if (self.state == PAIShopCartBottomBarState_Nomal) {

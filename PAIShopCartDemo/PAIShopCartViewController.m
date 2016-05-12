@@ -10,8 +10,8 @@
 #import "PAIShopCartBottomBar.h"
 #import "PAIShopCartCell.h"
 #import "PAIShopCartHeadView.h"
-#import "PAIShopRecommendView.h"
 #import "PAIShopRecommendCell.h"
+#import "PAIShopCartRecommendHeadView.h"
 
 typedef NS_ENUM(NSInteger,PAIShopCartViewControllerType) {
     PAIShopCartViewControllerType_Namal,
@@ -25,9 +25,9 @@ typedef NS_ENUM(NSInteger,PAIShopCartViewControllerType) {
 @property (nonatomic,strong)PAIShopCartBottomBar *bottomBar;
 @property (nonatomic,assign)PAIShopCartViewControllerType type;
 
-@property (nonatomic,strong)NSMutableArray *data;
-@property (nonatomic,strong)NSMutableSet *selectedSectionSet;
-@property (nonatomic,strong)NSMutableSet *selectedRowSet;
+@property (nonatomic,strong)__block NSMutableArray *data;
+@property (nonatomic,strong)__block NSMutableSet *selectedSectionSet;
+@property (nonatomic,strong)__block NSMutableSet *selectedRowSet;
 
 @end
 
@@ -75,7 +75,6 @@ typedef NS_ENUM(NSInteger,PAIShopCartViewControllerType) {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.title = @"购物车";
-//    self.automaticallyAdjustsScrollViewInsets = YES;
     self.type = PAIShopCartViewControllerType_Namal;
     [self addRightEditButton];
     [self addTableView];
@@ -86,10 +85,12 @@ typedef NS_ENUM(NSInteger,PAIShopCartViewControllerType) {
 }
 
 - (void)prepareData {
+    NSInteger space = 0;
     for (int i = 0; i < 5; i++) {
         NSMutableArray *array = [NSMutableArray array];
         for (int j = 0; j < 5; j++) {
-            [array addObject:[NSString stringWithFormat:@"number%d",j]];
+            space++;
+            [array addObject:[NSString stringWithFormat:@"%ld",space]];
         }
         [self.data addObject:array];
     }
@@ -112,7 +113,6 @@ typedef NS_ENUM(NSInteger,PAIShopCartViewControllerType) {
         make.top.mas_equalTo(self.view.mas_top);
         make.right.mas_equalTo(self.view.mas_right);
         make.bottom.mas_equalTo(self.view.mas_bottom).mas_offset(-49.f);
-//        make.height.mas_equalTo(self.view.frame.size.height + 64);
     }];
     
 }
@@ -134,12 +134,24 @@ typedef NS_ENUM(NSInteger,PAIShopCartViewControllerType) {
         }
     };
     
+    __weak __typeof(self.bottomBar)weakBottomBar = self.bottomBar;
+    __weak __typeof(self)weakSelf = self;
     self.bottomBar.selectedAllClick = ^ (PAIShopCartBottomBarType type) {
-        if (type == PAIShopCartBottomBarType_Nomal) {
-            // 全选计算所有费用
+        __strong __typeof(weakBottomBar)strongBottomBar = weakBottomBar;
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+        if (strongBottomBar.state == PAIShopCartBottomBarState_Nomal) {
+            [strongSelf.selectedSectionSet removeAllObjects];
+            [strongSelf.selectedRowSet removeAllObjects];
         }else {
-            // 全选删除
+            for (int i = 0 ; i < self.data.count - 1; i++) {
+                [strongSelf.selectedSectionSet addObject:[NSString stringWithFormat:@"%d",i]];
+                NSArray *array = strongSelf.data[i];
+                [strongSelf.selectedRowSet addObjectsFromArray:array];
+            }
+            // 全选计算所有费用
         }
+        [strongSelf setBottomBarCountAndPrice];
+        [strongSelf.tableView reloadData];
     };
 }
 
@@ -156,6 +168,24 @@ typedef NS_ENUM(NSInteger,PAIShopCartViewControllerType) {
     [self.tableView reloadData];
 }
 
+- (void)setBottomBarCountAndPrice {
+    NSInteger dataCount = 0;
+    for (int i = 0; i < self.data.count - 1; i++) {
+        NSArray *array = self.data[i];
+        dataCount += array.count;
+    }
+    
+    [self.bottomBar setBuyButtonCount:self.selectedRowSet.count];
+    [self.bottomBar setPrice:@"123123123"];
+    // 判断购物车是否是全选
+
+    if (dataCount == self.selectedRowSet.count) {
+        self.bottomBar.state = PAIShopCartBottomBarState_Selected;
+    }else {
+        self.bottomBar.state = PAIShopCartBottomBarState_Nomal;
+    }
+}
+
 #pragma mark - table view delegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -165,7 +195,11 @@ typedef NS_ENUM(NSInteger,PAIShopCartViewControllerType) {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSArray *array = self.data[section];
     if (section == self.data.count - 1) {
-        return array.count / 2;
+        if (array.count % 2 == 0) {
+            return array.count / 2;
+        }else {
+            return array.count / 2 + 1;
+        }
     }
     return array.count;
 }
@@ -179,14 +213,56 @@ typedef NS_ENUM(NSInteger,PAIShopCartViewControllerType) {
         if (cell == nil) {
             cell = [[[NSBundle mainBundle]loadNibNamed:@"PAIShopCartCell" owner:nil options:nil]lastObject];
         }
+        NSArray *array = self.data[indexPath.section];
+        cell.cellSection = indexPath.section;
+        cell.index = indexPath.row;
+        cell.itemId = array[indexPath.row];
         
         if (self.type == PAIShopCartViewControllerType_Namal) {
             cell.cellType = PAIShopCartCellType_Nomal;
         }else {
             cell.cellType = PAIShopCartCellType_Edit;
         }
+        
+        if ([self.selectedRowSet containsObject:cell.itemId]) {
+            cell.state = PAIShopCartCellState_selected;
+        }else {
+            cell.state = PAIShopCartCellState_Nomal;
+        }
+        
+        __weak __typeof(cell)weakCell = cell;
+        __weak __typeof(self)weakSelf = self;
         cell.selectedButtonBlock = ^(NSInteger index){
             // 选中或者取消
+            __strong __typeof(weakCell)strongCell = weakCell;
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            NSArray *array = strongSelf.data[strongCell.cellSection];
+            if (strongCell.state == PAIShopCartCellState_Nomal) {
+                if ([strongSelf.selectedRowSet containsObject:strongCell.itemId]) {
+                    [strongSelf.selectedRowSet removeObject:strongCell.itemId];
+                }
+                // 查询section是否是全选
+                if ([strongSelf.selectedSectionSet containsObject:[NSString stringWithFormat:@"%ld",strongCell.cellSection]]) {
+                    [strongSelf.selectedSectionSet removeObject:[NSString stringWithFormat:@"%ld",strongCell.cellSection]];
+                }
+            }else {
+                [strongSelf.selectedRowSet addObject:array[index]];
+                
+                // 判断每个section是否被全选
+                BOOL containAll = YES;
+                for (int i = 0; i < array.count; i++) {
+                    NSString *str = array[i];
+                    if (![strongSelf.selectedRowSet containsObject:str]) {
+                        containAll = NO;
+                        break;
+                    }
+                }
+                if (containAll) {
+                    [strongSelf.selectedSectionSet addObject:[NSString stringWithFormat:@"%ld",strongCell.cellSection]];
+                }
+            }
+            [strongSelf.tableView reloadData];
+            [strongSelf setBottomBarCountAndPrice];
         };
         
         cell.selecteSizeBlock = ^(NSInteger index) {
@@ -213,18 +289,52 @@ typedef NS_ENUM(NSInteger,PAIShopCartViewControllerType) {
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     static NSString *headIndentify = @"headerIndentify";
-    PAIShopCartHeadView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:headIndentify];
-    if (!headerView) {
-        headerView = [[[NSBundle mainBundle]loadNibNamed:@"PAIShopCartHeadView" owner:nil options:nil]lastObject];
+    if (section < self.data.count - 1) {
+        PAIShopCartHeadView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:headIndentify];
+        if (!headerView) {
+            headerView = [[[NSBundle mainBundle]loadNibNamed:@"PAIShopCartHeadView" owner:nil options:nil]lastObject];
+        }
+        headerView.section = section;
+        __weak __typeof(headerView)weakHead = headerView;
+        __weak __typeof(self)weakSelf = self;
+        
+        if (self.selectedSectionSet.count > 0) {
+            NSString *sectionStr = [NSString stringWithFormat:@"%ld",section];
+            if ([self.selectedSectionSet containsObject:sectionStr]) {
+                headerView.state = PAIShopCartSectionHeaderState_Selected;
+            }
+        }else {
+            headerView.state = PAIShopCartSectionHeaderState_Nomal;
+        }
+        
+        headerView.selectedAllButtonBlock = ^(NSInteger headsection){
+            __strong __typeof(weakSelf)strongSelf = weakSelf;
+            // 全选
+            if (weakHead.state == PAIShopCartSectionHeaderState_Selected) {
+                [strongSelf.selectedSectionSet addObject:[NSString stringWithFormat:@"%ld",headsection]];
+                // 添加数据
+                NSArray *array = weakSelf.data[headsection];
+                [strongSelf.selectedRowSet addObjectsFromArray:array];
+            }else {
+                [strongSelf.selectedSectionSet removeObject:[NSString stringWithFormat:@"%ld",headsection]];
+                 // 删除 row数据
+                NSArray *array = strongSelf.data[headsection];
+                for (int i = 0; i < array.count; i++) {
+                    [strongSelf.selectedRowSet removeObject:array[i]];
+                }
+            }
+            [strongSelf setBottomBarCountAndPrice];
+            [strongSelf.tableView reloadData];
+        };
+        headerView.selectedBlock = ^(NSInteger section) {
+            // link 官网
+        };
+        return headerView;
+    }else {
+        PAIShopCartRecommendHeadView *headView1 = [[[NSBundle mainBundle]loadNibNamed:@"PAIShopCartRecommendHeadView" owner:nil options:nil]lastObject];
+        return headView1;
     }
-    
-    headerView.selectedAllButtonBlock = ^(NSInteger section){
-        // 全选
-    };
-    headerView.selectedBlock = ^(NSInteger section) {
-        // link 官网
-    };
-    return headerView;
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -232,9 +342,6 @@ typedef NS_ENUM(NSInteger,PAIShopCartViewControllerType) {
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if (section == self.data.count - 1) {
-        return 44.f;
-    }
     return 0.1f;
 }
 
@@ -268,7 +375,11 @@ typedef NS_ENUM(NSInteger,PAIShopCartViewControllerType) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.section < self.data.count - 1) {
+        // 跳转到单品
+    }
 }
+
 
 
 - (void)didReceiveMemoryWarning {

@@ -7,7 +7,7 @@
 //
 
 #import "CollectionDemoViewController.h"
-#import "PAIShopRecommendView.h"
+//#import "PAIShopRecommendView.h"
 
 @interface CollectionDemoViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 @property (nonatomic,strong)UICollectionView *recommendView;
@@ -29,7 +29,7 @@
         _recommendView.delegate = self;
         _recommendView.dataSource = self;
         _recommendView.backgroundColor = [UIColor whiteColor];
-        [_recommendView registerNib:[UINib nibWithNibName:@"PAIShopRecommendView" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"CollectionCellIndentify"];
+//        [_recommendView registerNib:[UINib nibWithNibName:@"PAIShopRecommendView" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"CollectionCellIndentify"];
     }
     return _recommendView;
 }
@@ -49,7 +49,8 @@
 
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    PAIShopRecommendView *cell = (PAIShopRecommendView *)[collectionView dequeueReusableCellWithReuseIdentifier:@"CollectionCellIndentify" forIndexPath:indexPath];
+    UICollectionViewCell *cell;
+//    PAIShopRecommendView *cell = (PAIShopRecommendView *)[collectionView dequeueReusableCellWithReuseIdentifier:@"CollectionCellIndentify" forIndexPath:indexPath];
     return cell;
 }
 

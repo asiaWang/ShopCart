@@ -12,7 +12,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UILabel *itemNameLabel;
 @property (weak, nonatomic) IBOutlet UIButton *stateButton;
-@property (nonatomic,assign,readwrite)PAIShopCartSectionHeaderState state;
 
 @end
 

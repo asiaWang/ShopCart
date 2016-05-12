@@ -29,9 +29,12 @@ typedef NS_ENUM(NSInteger,PAIShopCartCellState) {
 @property (nonatomic,assign)NSInteger itemCounts;
 @property (nonatomic,assign)NSInteger itemMaxCounts;
 @property (nonatomic,assign)PAIShopCartCellState state;
+
+@property (nonatomic,copy)NSString *itemId; // test
 // 限购 默认不限购(limitedMaxCounts = -1);
 @property (nonatomic,assign)NSInteger limitedMaxCounts;
 @property (nonatomic,assign)NSInteger index;
+@property (nonatomic,assign)NSInteger cellSection;
 
 @property (nonatomic,copy)void (^selectedButtonBlock)(NSInteger index);
 @property (nonatomic,copy)void (^selecteSizeBlock)(NSInteger index);

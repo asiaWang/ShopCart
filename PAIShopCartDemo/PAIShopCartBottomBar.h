@@ -20,7 +20,7 @@ typedef NS_ENUM(NSInteger,PAIShopCartBottomBarState) {
 
 @interface PAIShopCartBottomBar : UIView
 @property (nonatomic,assign)PAIShopCartBottomBarType shopCartType;
-@property (nonatomic,assign,readonly)PAIShopCartBottomBarState state;
+@property (nonatomic,assign)PAIShopCartBottomBarState state;
 @property (nonatomic,copy)void (^shopCartBottomBarBuyClick)(PAIShopCartBottomBarType);
 @property (nonatomic,copy)void (^selectedAllClick)(PAIShopCartBottomBarType);
 
