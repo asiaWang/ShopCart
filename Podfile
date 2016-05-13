@@ -5,6 +5,7 @@
 
 target 'PAIShopCartDemo' do
    pod 'Masonry', '~> 1.0.0'
+   pod 'MJRefresh', '~> 3.1.0'
 end
 
 target 'PAIShopCartDemoTests' do

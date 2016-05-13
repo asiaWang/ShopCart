@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "PAIShopCartViewController.h"
 #import "CollectionDemoViewController.h"
+#import "PAIScrollViewViewControllerOne.h"
 
 @interface ViewController ()
 
@@ -28,6 +29,11 @@
 - (IBAction)pushDemo:(id)sender {
     CollectionDemoViewController *demo = [[CollectionDemoViewController alloc]init];
     [self.navigationController pushViewController:demo animated:YES];
+}
+
+- (IBAction)pushScrollView:(id)sender {
+    PAIScrollViewViewControllerOne *scrollView = [[PAIScrollViewViewControllerOne alloc] initWithNibName:@"PAIScrollViewViewControllerOne" bundle:[NSBundle mainBundle]];
+    [self.navigationController pushViewController:scrollView animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
